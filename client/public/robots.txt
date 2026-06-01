@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://jdadai.totlesoft.com/sitemap.xml
