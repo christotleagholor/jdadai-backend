@@ -1,5 +1,5 @@
 import express from "express";
-import { auth } from "../middleware/auth.js";
+import { auth, requirePremium } from "../middleware/auth.js";
 import { generateArticle, generateBlogTitle, generateImage, removeBackground, removeImageObject, resumeReview } from "../controller/aiController.js";
 import { upload } from "../config/multer.js";
 

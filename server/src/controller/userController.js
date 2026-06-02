@@ -53,3 +53,34 @@ export const toggleLikeCreation = async (req,res) => {
     }
 }
 
+
+export const getFreeUsage = async (req, res) => {
+    try {
+        const { userId } = req.auth();
+        const user = await clerkClient.users.getUser(userId);
+        
+        const freeUsage = user.privateMetadata?.free_usage || 0;
+        
+        res.json({ success: true, usage: freeUsage });
+    } catch (error) {
+        res.json({ success: false, message: error.message });
+    }
+};
+
+export const incrementFreeUsage = async (req, res) => {
+    try {
+        const { userId } = req.auth();
+        const user = await clerkClient.users.getUser(userId);
+        
+        const currentUsage = user.privateMetadata?.free_usage || 0;
+        const newUsage = currentUsage + 1;
+        
+        await clerkClient.users.updateUserMetadata(userId, {
+            privateMetadata: { free_usage: newUsage }
+        });
+        
+        res.json({ success: true, usage: newUsage });
+    } catch (error) {
+        res.json({ success: false, message: error.message });
+    }
+};

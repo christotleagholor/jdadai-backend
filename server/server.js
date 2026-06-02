@@ -7,6 +7,7 @@ import { clerkMiddleware, requireAuth } from '@clerk/express'
 import aiRouter from './src/routes/aiRoutes.js';
 import connectCloudinary from './src/config/cloudinary.js';
 import userRouter from './src/routes/userRoutes.js';
+import subscriptionRoutes from './src/routes/subscriptionRoutes.js';
 
 const app = express();
 await connectCloudinary();
@@ -26,5 +27,6 @@ app.use(cors({
 app.use(requireAuth())
 app.use('/api/ai', aiRouter)
 app.use('/api/user', userRouter);
+app.use('/api/subscription', subscriptionRoutes);
 
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
