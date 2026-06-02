@@ -229,27 +229,27 @@ router.post('/initialize-payment', requireAuth(), async (req, res) => {
     
     // Flutterwave payload
     const payload = {
-  tx_ref: txRef,
-  amount: Number(convertedAmount),
-  currency: currency,
-  redirect_url: returnUrl || `${process.env.FRONTEND_URL || 'http://localhost:5173'}/pricing`,
-  payment_options: 'card, account, banktransfer, ussd', 
-  customer: {
-    email: userEmail,
-    name: userName,
-    phonenumber: phone || '08000000000'
-  },
-  customizations: {
-    title: 'Jdad AI Subscription',
-    description: `${PLANS[plan].name} - Monthly Subscription`,
-    logo: 'https://i.ibb.co/xSV23fYg/logo.png'
-  },
-  meta: {
-    userId: userId,
-    plan: plan,
-    subscriptionId: subscription._id.toString()
-  }
-};
+      tx_ref: txRef,
+      amount: Number(convertedAmount),
+      currency: currency,
+      redirect_url: returnUrl || `${process.env.FRONTEND_URL || 'http://localhost:5173'}/pricing`,
+      payment_options: 'card,mobilemoney,ussd,banktransfer',
+      customer: {
+        email: userEmail,
+        name: userName,
+        phonenumber: phone || '08000000000'
+      },
+      customizations: {
+        title: 'Jdad AI Subscription',
+        description: `${PLANS[plan].name} - Monthly Subscription`,
+        logo: `https://i.ibb.co/xSV23fYg/logo.png`
+      },
+      meta: {
+        userId: userId,
+        plan: plan,
+        subscriptionId: subscription._id.toString()
+      }
+    };
     
     console.log('Flutterwave payload:', payload);
     
