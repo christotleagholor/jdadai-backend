@@ -1,13 +1,26 @@
-FROM node:20-slim
+FROM node:18-alpine
+
+# Set timezone to avoid hangs
+ENV TZ=UTC
 
 WORKDIR /app
 
+# Copy package files
 COPY package*.json ./
 
-RUN npm ci --only=production
+# Install dependencies with timeout and cleanup
+RUN npm install --production --no-fund --no-audit --loglevel=error || \
+    npm install --production --no-fund --no-audit --loglevel=error --timeout=60000
 
+# Copy application code
 COPY . .
 
+# Expose port
 EXPOSE 5000
 
-CMD ["npm", "start"]
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:5000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
+
+# Start the application
+CMD ["node", "server.js"]
